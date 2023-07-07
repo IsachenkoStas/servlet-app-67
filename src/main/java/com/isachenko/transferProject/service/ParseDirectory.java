@@ -1,11 +1,10 @@
 package com.isachenko.transferProject.service;
 
-import com.isachenko.transferProject.exception.NoProperFileException;
-
 import java.io.File;
 import java.util.List;
 
 public class ParseDirectory {
+
     public static void getFiles(File rootFile, List<File> fileList) {
         if (rootFile.isDirectory()) {
             File[] directoryFiles = rootFile.listFiles();
@@ -19,8 +18,6 @@ public class ParseDirectory {
                         }
                     }
                 }
-            } else {
-                throw new NoProperFileException("No proper file");
             }
         }
     }

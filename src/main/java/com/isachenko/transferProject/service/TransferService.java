@@ -1,7 +1,5 @@
 package com.isachenko.transferProject.service;
 
-import com.isachenko.transferProject.exception.InitialFileParsingException;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,19 +13,19 @@ public class TransferService {
 
     public void initialize(Map<String, Integer> accounts) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader("src/main/java/com/isachenko/transferProject/files/AccsInfo"));
+            BufferedReader br =
+                    new BufferedReader(new FileReader("src/main/java/com/isachenko/transferProject/files/AccsInfo"));
             String s;
             while ((s = br.readLine()) != null) {
                 accounts.put(s.substring(0, 11), Integer.parseInt(s.substring(13)));
             }
         } catch (IOException e) {
             e.printStackTrace();
-            throw new InitialFileParsingException("Smth went wrong :((", e);
         }
     }
 
     public void parseTransfers(List<File> fileList, Map<String, Integer> accounts) {
-        ParseDirectory.getFiles(new File("/Users/allencooper/Desktop/differentFiles"), fileList);
+        ParseDirectory.getFiles(new File("src/main/java/com/isachenko/transferProject/files/differentFiles"), fileList);
         try {
             for (File file : fileList) {
                 BufferedReader br = new BufferedReader(new FileReader(file));
@@ -40,21 +38,20 @@ public class TransferService {
                         if (accounts.get(line.substring(0, 11)) > Integer.parseInt(line.substring(25))) {
                             accounts.replace(line.substring(0, 11), cashOut);
                             accounts.replace(line.substring(12, 23), cashIn);
-                            res = " Success!!!";
+                            res = " Successful transactions";
                         } else {
-                            res = " Smth went wrong :((";
+                            res = " Unsuccessfully, invalid amount";
                         }
+                    } else {
+                        res = "file is not suitable, possibly incorrect data entered";
                     }
                 }
-                try (FileWriter reportFile = new FileWriter("src/main/java/com/isachenko/transferProject/files/reportFile", true)) {
-                    reportFile.write("Date: " + LocalDateTime.now() + ". File name - " + file.getName() + ". Result - " + res + '\n');
+                try (FileWriter reportFile =
+                             new FileWriter("src/main/java/com/isachenko/transferProject/files/reportFile", true)) {
+                    reportFile.write("Date: " + LocalDateTime.now() +
+                            ". File name - " + file.getName() + ". Result - " + res + '\n');
                 } catch (IOException e) {
-                    throw new InitialFileParsingException("Smth went wrong", e);
-                }
-                try (FileWriter archiveWriter = new FileWriter("src/main/java/com/isachenko/transferProject/files/archive")) {
-                    archiveWriter.write(fileList.toString() + '\n');
-                } catch (IOException e) {
-                    throw new InitialFileParsingException("Smth went wrong", e);
+                    e.printStackTrace();
                 }
             }
         } catch (IOException e) {
@@ -68,7 +65,7 @@ public class TransferService {
                 fileWriter.write(e.getKey() + ": " + e.getValue() + '\n');
             }
         } catch (IOException e) {
-            throw new InitialFileParsingException("Smth went wrong", e);
+            e.printStackTrace();
         }
     }
 
@@ -81,7 +78,6 @@ public class TransferService {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            throw new InitialFileParsingException("Smth went wrong", e);
         }
     }
 }

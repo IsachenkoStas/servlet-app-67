@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
         TransferService transferService = new TransferService();
         Map<String, Integer> accounts = new HashMap<>();
         List<File> fileList = new ArrayList<>();
@@ -19,6 +18,7 @@ public class Main {
         if (choice == 1) {
             transferService.parseTransfers(fileList, accounts);
             transferService.rewriteAccInfo(accounts);
+            ArchiveHandling.moveToArchive(fileList);
         } else if (choice == 2) {
             transferService.readReportFile();
         } else {
