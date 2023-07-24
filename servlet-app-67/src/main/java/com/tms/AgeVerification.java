@@ -18,7 +18,6 @@ public class AgeVerification extends HttpServlet {
         String age = req.getParameter("check");
         if (age == null) {
             writer.println("It is Age Verification");
-            writer.println(" ");
         } else if (Integer.parseInt(age) >= 18) {
             writer.println("Adult");
         } else if (Integer.parseInt(age) > 0 && Integer.parseInt(age) < 18) {
